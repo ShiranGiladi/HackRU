@@ -21,13 +21,13 @@ def chatgpt():
             prompt="Hello, this is a test.",
             max_tokens=5,
         )
-        print("Model 'gpt-3.5-turbo' is valid and available.")
+        logging.debug("Model 'gpt-3.5-turbo' is valid and available.")
     except openai.error.InvalidRequestError as e:
-        print("Error: Model 'gpt-3.5-turbo' is invalid or not available.")
+        logging.debug("Error: Model 'gpt-3.5-turbo' is invalid or not available.")
     except openai.error.AuthenticationError as e:
-        print("Error: Invalid OpenAI API key.")
+        logging.debug("Error: Invalid OpenAI API key.")
     except Exception as e:
-        print("An unexpected error occurred:", str(e))
+        logging.debug("An unexpected error occurred:", str(e))
 
     # Get the user input from the request (this is the conversation from the slash command)
     user_input = request.form.get('text')
