@@ -9,22 +9,22 @@ app = Flask(__name__)
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-Slack_TOKEN = os.environ.get('SLACK_TOKEN')
+SLACK_TOKEN = os.environ.get('SLACK_TOKEN')
 CHATGPT_API_KEY = os.environ.get('CHATGPT_API_KEY')
 
 @app.route('/slack/command', methods=['POST'])
 def chatgpt():
+    logging.debug("CHATGPT_API_KEY: %s", CHATGPT_API_KEY)
+
     # Get the user input from the request (this is the conversation from the slash command)
     user_input = request.form.get('text')
     channel_id = request.form.get('channel_id')
-    logging.debug("channel_id: %s", channel_id)
 
     # Initialize the Slack API client
-    client = WebClient(token=Slack_TOKEN)
+    client = WebClient(token=SLACK_TOKEN)
     
     # Retrieve the conversation history from the Slack channel
     response = client.conversations_history(channel=channel_id)
-    logging.debug("response: %s", response)
     if response["ok"]:
         messages = response["messages"]
         conversation = '\n'.join([message["text"] for message in messages if "text" in message])
