@@ -4,6 +4,7 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 import os
 import logging
+import openai
 
 app = Flask(__name__)
 
@@ -14,7 +15,19 @@ CHATGPT_API_KEY = os.environ.get('CHATGPT_API_KEY')
 
 @app.route('/slack/command', methods=['POST'])
 def chatgpt():
-    logging.debug("CHATGPT_API_KEY: %s", CHATGPT_API_KEY)
+    try:
+        response = openai.Completion.create(
+            engine="text-davinci-002",  # Use any valid engine here, it doesn't matter for this check
+            prompt="Hello, this is a test.",
+            max_tokens=5,
+        )
+        print("Model 'gpt-3.5-turbo' is valid and available.")
+    except openai.error.InvalidRequestError as e:
+        print("Error: Model 'gpt-3.5-turbo' is invalid or not available.")
+    except openai.error.AuthenticationError as e:
+        print("Error: Invalid OpenAI API key.")
+    except Exception as e:
+        print("An unexpected error occurred:", str(e))
 
     # Get the user input from the request (this is the conversation from the slash command)
     user_input = request.form.get('text')
