@@ -62,6 +62,8 @@ def chatgpt():
 
     # Get the generated response from ChatGPT
     api_response = response.json()
+    
+    logging.debug("api_response=", api_response)
     if 'choices' in api_response:
         generated_response = api_response['choices'][0]['message']['content']
     else:
