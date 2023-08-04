@@ -14,12 +14,14 @@ def chatgpt():
     # Get the user input from the request (this is the conversation from the slash command)
     user_input = request.form.get('text')
     channel_id = request.form.get('channel_id')
+    print("channel_id:", channel_id)
 
     # Initialize the Slack API client
     client = WebClient(token=Slack_TOKEN)
     
     # Retrieve the conversation history from the Slack channel
     response = client.conversations_history(channel=channel_id)
+    print("response:", response)
     if response["ok"]:
         messages = response["messages"]
         conversation = '\n'.join([message["text"] for message in messages if "text" in message])
