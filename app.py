@@ -41,6 +41,11 @@ def chatgpt():
 
     # Send the API request
     response = requests.post('https://api.openai.com/v1/chat/completions', headers=headers, json=data, timeout=120)
+    
+    # Check for successful response
+    if response.status_code != 200:
+        print("Error: ChatGPT API request failed with status code:", response.status_code)
+        return jsonify({"response_type": "ephemeral", "text": "Failed to get a valid response from the APIIIIII."})
 
     # Get the generated response from ChatGPT
     api_response = response.json()
