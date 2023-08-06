@@ -2,4 +2,3 @@ flask
 gunicorn
 requests
 slack-sdk
-openai==0.27.1
