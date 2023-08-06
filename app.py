@@ -3,32 +3,14 @@ import requests
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 import os
-import logging
-import openai
 
 app = Flask(__name__)
-
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 SLACK_TOKEN = os.environ.get('SLACK_TOKEN')
 CHATGPT_API_KEY = os.environ.get('CHATGPT_API_KEY')
 
 @app.route('/slack/command', methods=['POST'])
 def chatgpt():
-    try:
-        response = openai.Completion.create(
-            engine="text-davinci-002",  # Use any valid engine here, it doesn't matter for this check
-            prompt="Hello, this is a test.",
-            max_tokens=5,
-        )
-        logging.debug("Model 'gpt-3.5-turbo' is valid and available.")
-    except openai.error.InvalidRequestError as e:
-        logging.debug("Error: Model 'gpt-3.5-turbo' is invalid or not available.")
-    except openai.error.AuthenticationError as e:
-        logging.debug("Error: Invalid OpenAI API key.")
-    except Exception as e:
-        logging.debug("An unexpected error occurred:", str(e))
-
     # Get the user input from the request (this is the conversation from the slash command)
     user_input = request.form.get('text')
     channel_id = request.form.get('channel_id')
@@ -63,7 +45,6 @@ def chatgpt():
     # Get the generated response from ChatGPT
     api_response = response.json()
     
-    logging.debug("api_response=", api_response)
     if 'choices' in api_response:
         generated_response = api_response['choices'][0]['message']['content']
     else:
