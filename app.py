@@ -36,7 +36,7 @@ def chatgpt():
 
     data = {
         'model': 'gpt-3.5-turbo',
-        'messages': [{'role': 'system', 'content': 'You are a helpful assistant.'}, {'role': 'user', 'content': user_input}]
+        'messages': [{'role': 'user', 'content': user_input}]
     }
 
     # Send the API request
